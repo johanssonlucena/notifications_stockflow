@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Notification Service", version="1.0.0")
 
+
 class AlertRequest(BaseModel):
     product_name: str
     current_quantity: int
@@ -16,10 +17,12 @@ class AlertRequest(BaseModel):
     sku: str
     timestamp: str = None
 
+
 @app.get("/health")
 async def health_check():
     """Endpoint de health check"""
     return {"status": "healthy", "timestamp": datetime.utcnow().isoformat()}
+
 
 @app.post("/alert")
 async def send_alert(alert: AlertRequest):
@@ -51,6 +54,7 @@ async def send_alert(alert: AlertRequest):
     except Exception as e:
         logger.error(f"Erro ao processar alerta: {str(e)}")
         raise HTTPException(status_code=500, detail="Erro interno do servidor")
+
 
 if __name__ == "__main__":
     import uvicorn
